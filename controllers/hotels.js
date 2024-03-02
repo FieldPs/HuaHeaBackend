@@ -8,7 +8,7 @@ exports.getHotels =async (req,res,next) => {
     console.log(reqQuery);
     let queryStr=JSON.stringify(reqQuery);
     queryStr=queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match=>`$${match}`);
-    query = Hotel.find(JSON.parse(queryStr))
+    query = Hotel.find(JSON.parse(queryStr)).populate('rooms bookings');
 
     if(req.query.select){
         const fields=req.query.select.split(',').join(' ');
@@ -84,10 +84,11 @@ exports.updateHotel = async (req,res,next) => {
 
 exports.deleteHotel = async (req,res,next) => {
     try{
-        const hotel = await Hotel.findByIdAndDelete(req.params.id);
+        const hotel = await Hotel.findById(req.params.id);
         if(!hotel){
             return res.status(400).json({success:false});
          }
+         await hotel.deleteOne();
          res.status(200).json({success:true,data: {}});
     
     }catch(err){

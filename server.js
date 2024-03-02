@@ -12,6 +12,8 @@ connectDB();
 // Route files
 const hotels = require('./routes/hotels');
 const auth = require('./routes/auth');
+const bookings = require('./routes/bookings');
+const rooms=require('./routes/rooms');
 
 const app = express();
 // Body parser
@@ -22,6 +24,8 @@ app.use(cookieParser());
 
 app.use('/api/v1/hotels' , hotels);
 app.use('/api/v1/auth', auth);
+app.use('/api/v1/bookings',bookings);
+app.use('/api/v1/rooms',rooms);
 
 const PORT = process.env.PORT || 5000;
 
